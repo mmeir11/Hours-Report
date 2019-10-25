@@ -1,0 +1,34 @@
+.register {
+    background: #dcdcdc40;
+    text-align: center;
+    height: 100vh;
+    padding: 60px 0;
+}
+.form-register{
+    border: 1px solid #CFD8DC;
+    background: white;
+    display: inline-block;
+    padding: 20px;
+    padding: 30px 30px 20px;
+}
+.header-register{
+    padding-bottom: 25px;
+    font-size: 50px;
+    font-weight: bolder;
+    color: #2f84df;
+
+}
+.form-group  {
+    display: flex;
+    margin-bottom: 15px;
+}
+.filed {
+    border: none;
+    background: #F5F6FA;
+    border-radius: 2px;
+    height: 48px;
+    width: 401px;
+    text-align: center;
+}
+
+

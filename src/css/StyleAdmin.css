@@ -1,0 +1,52 @@
+.container-admin {
+    background: #dcdcdc40;
+    text-align: center;
+    height: 100vh;
+    /* padding: 60px 0; */
+}
+
+.header-admin {
+    /* margin-bottom: 30px; */
+    font-size: 50px;
+    color: #2f84df;
+}
+
+.form-admin {
+    border: 1px solid #CFD8DC;
+    background: white;
+    display: inline-table;
+    width: 30%;
+    border-radius: 2px;
+    padding: 30px 30px 20px;
+}
+
+.admin-field {
+    border: none;
+    background: #F5F6FA;
+    border-radius: 2px;
+    height: 48px;
+    width: 401px;
+    margin-bottom: 25px;
+    text-align: center;
+}
+.group {
+    padding: 40px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #CFD8DC;
+}
+
+.form-group-report {
+    padding-top: 40px;
+}
+
+.subtitle-admin{
+    font-size: 18px;
+    padding-bottom: 5px;
+    font-style: oblique;
+    font-weight: bold;
+    color: #333639;
+}
+
+.group.form-group-report {
+    border-bottom: 0px;
+}

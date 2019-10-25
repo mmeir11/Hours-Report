@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Axios from 'axios';
 import { MDBInput } from "mdbreact";
-import './Style.css';
+import '../css/StyleLogin.css';
 
 
 import Button from '@material-ui/core/Button';
@@ -70,18 +70,17 @@ export default class Login extends Component {
   render() {
     return (
       // container
-      <div className="ff">
-        <h1 className="col-md-6 col-md-offset-3">Login</h1>
-        <form onSubmit={this.onSubmit}>
-
+      <div className="login">
+        <h1 className="header-login">Login</h1>
+        <form className="form-login" onSubmit={this.onSubmit}>
 
           <div className="form-group username">
-            <input className="filed" type="number" placeholder="Worker ID"
+            <input className="filed" type="number" placeholder="  Worker ID"
               value={this.state.username} onChange={this.onChangeUsername} />
           </div>
 
           <div className="form-group password">
-            <input className="filed" type="password" placeholder="Password"
+            <input className="filed" type="password" placeholder="  Password"
               value={this.state.password} onChange={this.onChangePassword} />
           </div>
 

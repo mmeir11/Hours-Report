@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import Axios from 'axios';
-import './Style.css';
+// import './StyleRegister.css';
+
+import '../css/StyleRegister.css';
+
 
 export default class Register extends Component{
-
 
     constructor(props){
         super(props);
@@ -79,22 +81,21 @@ export default class Register extends Component{
 
     render(){
         return (
-            <div>
-              <h1>Register</h1>
-              <form onSubmit={this.onSubmit}>
+            <div className="register">
+              <h1 className="header-register">Register</h1>
+
+              <form className="form-register" onSubmit={this.onSubmit}>
                 <div className="form-group username">
-                  <input className="filed" type="number" placeholder = "Worker ID" 
+                  <input className="filed" type="number" placeholder = "   Worker ID" 
                          value={this.state.workerNumber} onChange={this.onChangeWorkerNumber} />
                 </div>
                 <div className="form-group password">
-                  <input className="filed" type="password"  placeholder="Password"
+                  <input className="filed" type="password"  placeholder="   Password"
                          value={this.state.password} onChange={this.onChangePassword} />
                 </div>
                 <input type="submit" value="Registration" className="btn btn-primary registertion-btn" />
-
-
               </form>
-            </div>
+              </div>
         )
     }
 }

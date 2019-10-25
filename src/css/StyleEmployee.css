@@ -1,0 +1,37 @@
+.container-employee {
+    background: #dcdcdc40;
+    text-align: center;
+    padding: 60px 0;
+    height: 100vh;
+}
+
+.header-employee {
+    margin-bottom: 40px;
+    font-size: 50px;
+    color: #2f84df;
+}
+
+.form-employee {
+    width: 30%;
+    margin: auto
+}
+
+
+.form-group-start-time ,.form-group-end-time {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    border: 1px solid #D3D3D3;
+    margin-top: 15px;
+}
+
+.form-group-submit-btn{
+    padding: 10px;
+}
+
+.subtitle{
+    font-size: 15px;
+    font-style: oblique;
+    font-weight: bold;
+    color: #798c9b;
+}
