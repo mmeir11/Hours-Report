@@ -35,3 +35,15 @@
     font-weight: bold;
     color: #798c9b;
 }
+
+.modal-content{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.header-modal{
+    padding: 15px;
+}

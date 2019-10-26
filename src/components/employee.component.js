@@ -3,6 +3,7 @@ import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import TimePicker from 'react-time-picker';
 import Axios from 'axios';
+import Modal from 'react-awesome-modal';
 
 import '../css/StyleEmployee.css';
 
@@ -13,7 +14,7 @@ export default class EmployeeComponent extends Component {
 
         // bind function
         this.onSubmit = this.onSubmit.bind(this);
-        this.setCompanyNameFromDatabase = this.setCompanyNameFromDatabase.bind(this);
+        // this.setCompanyNameFromDatabase = this.setCompanyNameFromDatabase.bind(this);
         this.setCompanysAndProffesionsFromDBToState = this.setCompanysAndProffesionsFromDBToState.bind(this);
 
         this.state = {
@@ -24,25 +25,25 @@ export default class EmployeeComponent extends Component {
             companys: [],
             company: '',
             professions: [],
-            profession: ''
+            profession: '',
+            modalVisible: false,
+            messageOfModal: '',
         };
 
         this.setCompanysAndProffesionsFromDBToState();
     }
 
-    // TODO: get company from DB
-    setCompanyNameFromDatabase() {
-        /*  this.state.companys.map(function(company)
-         {
-             console.log(company.value);
-             
-             return <option
-             key={company}
-             value={company}>{company}
-             </option>;
-         }); */
+    openModal = () => {
+        this.setState({
+            modalVisible: true
+        });
     }
 
+    closeModal = () => {
+        this.setState({
+            modalVisible: false
+        });
+    }
 
     onChangeCompanyName = newCompany => {
         this.setState({
@@ -80,6 +81,35 @@ export default class EmployeeComponent extends Component {
         });
     };
 
+    setCompanysAndProffesionsFromDBToState() {
+
+        Axios.get('http://localhost:5000/companys')
+            .then(result => {
+                const companysArray = result.data;
+                const namesOfCompanys = [];
+                const nameOfProfessions = [];
+
+                companysArray.forEach(companyObject => {
+                    namesOfCompanys.push(companyObject.company);
+
+                    const professionsArray = companyObject.professions;
+                    professionsArray.forEach(professionObject => {
+                        nameOfProfessions.push(professionObject.profession);
+                    });
+
+                });
+
+                this.setState({
+                    companys: namesOfCompanys,
+                    company: namesOfCompanys[0],
+                    professions: nameOfProfessions,
+                    profession: nameOfProfessions[0],
+                });
+                // console.log(namesOfCompanys);
+                // console.log(nameOfProfessions);
+            });
+    };
+
     // add to employee new work day
     onSubmit(event) {
         event.preventDefault();
@@ -105,48 +135,23 @@ export default class EmployeeComponent extends Component {
             ],
         };
 
-        this.getComoanysToOption();
 
-        /* 
-                Axios.post('http://localhost:5000/employees/' + workerNumber + '/employers/updateHours', newHoursToAdd)
-                .then(result => console.log(result.data))
-                .catch(err => console.log(err));
-        
-         */
 
-    }
 
-    setCompanysAndProffesionsFromDBToState() {
-
-        Axios.get('http://localhost:5000/companys')
+        Axios.post('http://localhost:5000/employees/' + workerNumber + '/employers/updateHours', newHoursToAdd)
             .then(result => {
-                const companysArray = result.data;
-                const namesOfCompanys = [];
-                const nameOfProfessions = [];
-
-                companysArray.forEach(companyObject => {
-                    namesOfCompanys.push(companyObject.company);
-
-                    const professionsArray = companyObject.professions;
-                    professionsArray.forEach(professionObject => {
-                        nameOfProfessions.push(professionObject.profession);
-                    });
-
-                });
-
                 this.setState({
-                    companys: namesOfCompanys,
-                    company: namesOfCompanys[0],
-                    professions: nameOfProfessions,
-                    profession: nameOfProfessions[0],
-                });
-                console.log(namesOfCompanys);
-                console.log(nameOfProfessions);
+                    messageOfModal: result.data
+                }, () => this.openModal());
+                console.log(result.data);
+            })
+            .catch(err =>{ 
+                this.setState({
+                    messageOfModal: err +''
+                }, () => this.openModal());
+                console.log(err);
             });
-    };
 
-    getComoanysToSelect = () => {
-        const companysNames = this.state.companys;
 
 
     }
@@ -206,6 +211,19 @@ export default class EmployeeComponent extends Component {
                         <input type="submit" value="Add" className="btn btn-primary" />
                     </div>
                 </form>
+
+                <Modal className="modal"
+                    visible={this.state.modalVisible}
+                    width="400"
+                    height="300"
+                    effect="fadeInUp"
+                    onClickAway={() => this.closeModal()}
+                >
+                    <div className="modal-content">
+                        <h5 className="header-modal">{this.state.messageOfModal}</h5>
+                        <input type="button" value="Close" className="btn btn-primary" onClick={() => this.closeModal()}/>
+                    </div>
+                </Modal>
             </div>
         )
     }

@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import Axios from 'axios';
-import { json2csv, json2csvAsync } from 'json-2-csv';
-// import './StyleAdmin.css';
+import { json2csv } from 'json-2-csv';
+import Modal from 'react-awesome-modal';
+
 import '../css/StyleAdmin.css';
+
 
 let options = {
     delimiter: {
@@ -39,7 +41,22 @@ export default class Admin extends Component {
             pay: '',
             workerID: '',
             dataToCVS: 'null',
+            modalVisible: false,
+            messageOfModal: '',
+
         };
+    }
+
+    openModal = () => {
+        this.setState({
+            modalVisible: true
+        });
+    }
+
+    closeModal = () => {
+        this.setState({
+            modalVisible: false
+        });
     }
 
     onClickAddCompany(event) {
@@ -52,8 +69,18 @@ export default class Admin extends Component {
         };
 
         Axios.post('http://localhost:5000/companys/addNewCompany', newCompany)
-            .then(result => console.log(result.data))
-            .catch(err => console.log('Error ' + err));
+            .then(result => {
+                this.setState({
+                    messageOfModal: result.data + ''
+                }, () => this.openModal());
+                console.log(result.data);
+            })
+            .catch(err => {
+                this.setState({
+                    messageOfModal: err + ''
+                }, () => this.openModal());
+                console.log('Error: ' + err)
+            });
 
         this.setState({
             newCompany: ''
@@ -75,8 +102,18 @@ export default class Admin extends Component {
         };
 
         Axios.post('http://localhost:5000/companys/addNewProfession', newProfession)
-            .then(result => console.log(result.data))
-            .catch(err => console.log('Error ' + err));
+            .then(result => {
+                this.setState({
+                    messageOfModal: result.data + ''
+                }, () => this.openModal());
+                console.log(result.data);
+            })
+            .catch(err => {
+                this.setState({
+                    messageOfModal: err + ''
+                }, () => this.openModal());
+                console.log('Error: ' + err)
+            });
 
         this.setState({
             companyToUpdate: '',
@@ -110,7 +147,12 @@ export default class Admin extends Component {
 
 
             })
-            .catch(err => console.log('Error ' + err));
+            .catch(err => {
+                this.setState({
+                    messageOfModal: 'Error'
+                }, () => this.openModal());
+                console.log('Error: ' + err)
+            });
     }
 
     downloadCSV(csv) {
@@ -169,7 +211,7 @@ export default class Admin extends Component {
                 <div className="header-admin">Admin page</div>
                 <form className="form-admin">
                     <div className="group form-group-company">
-                    <label className="subtitle-admin">Add new company</label>
+                        <label className="subtitle-admin">Add new company</label>
                         <div>
                             <input type="text" className="admin-field" placeholder="Company name" value={this.state.newCompany} onChange={this.onChangenewCompany} />
                         </div>
@@ -180,7 +222,7 @@ export default class Admin extends Component {
                     </div>
 
                     <div className="group form-group-profession">
-                    <label className="subtitle-admin">Add new profession</label>
+                        <label className="subtitle-admin">Add new profession</label>
                         <input type="text" className="admin-field" placeholder="Profession" value={this.state.newProfession} onChange={this.onChangeNewProfession} />
                         <input type="number" className="admin-field" placeholder="Pay per hour" value={this.state.pay} onChange={this.onChangePay} />
                         <input type="text" className="admin-field" placeholder="Company" value={this.state.companyToUpdate} onChange={this.onChangeCompanyToUpdate} />
@@ -191,7 +233,7 @@ export default class Admin extends Component {
                     </div>
 
                     <div className="group form-group-report">
-                    <label className="subtitle-admin">Report</label>
+                        <label className="subtitle-admin">Report</label>
                         <input type="text" className="admin-field" placeholder="Worker ID" value={this.state.workerID} onChange={this.onChangeworkerID} />
                         <div>
                             <input className="btn btn-info" type="submit"
@@ -204,9 +246,17 @@ export default class Admin extends Component {
 
                 </form>
 
-
-
-
+                <Modal className="modal"
+                    visible={this.state.modalVisible}
+                    width="400"
+                    height="300"
+                    effect="fadeInUp"
+                    onClickAway={() => this.closeModal()} >
+                    <div className="modal-content">
+                        <h5 className="header-modal">{this.state.messageOfModal}</h5>
+                        <input type="button" value="Close" className="btn btn-info" onClick={() => this.closeModal()} />
+                    </div>
+                </Modal>
             </div>
         )
     }

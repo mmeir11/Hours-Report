@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import Axios from 'axios';
-import { MDBInput } from "mdbreact";
 import '../css/StyleLogin.css';
-
-
+import Modal from 'react-awesome-modal';
 import Button from '@material-ui/core/Button';
 
 export default class Login extends Component {
@@ -19,20 +17,34 @@ export default class Login extends Component {
 
     this.state = {
       username: '',
-      password: ''
+      password: '',
+      modalVisible: false,
+      messageOfModal: '',
     }
 
+  }
+
+  openModal = () => {
+    this.setState({
+      modalVisible: true
+    });
+  }
+
+  closeModal = () => {
+    this.setState({
+      modalVisible: false
+    });
   }
 
   onSubmit(event) {
     event.preventDefault();
 
-    const username = this.state.username;
-    const password = this.state.password;
+    var username = this.state.username;
+    var password = this.state.password;
 
     Axios.get('http://localhost:5000/users/' + username)
       .then((result) => {
-        if (result.data.username == username && result.data.password == password) {
+        if (result.data != null && result.data.username == username && result.data.password == password) {
           if (result.data.username == 999) {
             window.location = '/admin';
           }
@@ -41,11 +53,18 @@ export default class Login extends Component {
           }
         }
         else {
-          console.log("Not correct");
+          this.setState({
+            messageOfModal: 'username/password is incorrect'
+          }, () => this.openModal());
         }
 
       })
-      .catch(err => console.log('Error: ' + err));
+      .catch(err => {
+        this.setState({
+          messageOfModal: err + ''
+        }, () => this.openModal());
+        console.log('Error: ' + err);
+      });
 
   };
 
@@ -91,9 +110,19 @@ export default class Login extends Component {
           <Button variant="contained" color="secondary" onClick={this.onClickRegisterBtn}>
             Register
                 </Button>
-
-
         </form>
+
+        <Modal className="modal"
+          visible={this.state.modalVisible}
+          width="400"
+          height="300"
+          effect="fadeInUp"
+          onClickAway={() => this.closeModal()} >
+          <div className="modal-content">
+            <h5 className="header-modal">{this.state.messageOfModal}</h5>
+            <input type="button" value="Close" className="btn btn-info" onClick={() => this.closeModal()} />
+          </div>
+        </Modal>
       </div>
     )
   }

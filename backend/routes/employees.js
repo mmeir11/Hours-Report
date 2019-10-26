@@ -55,7 +55,7 @@ router.route('/:username/employers/updateHours').post( (request, response) => {
             const updatedEmployee = new Employee(employee);
 
             updatedEmployee.save()
-            .then(() =>{response.json('New Employee updated!')})
+            .then(() =>{response.json('Employee updated!!')})
             .catch(err => response.status(400).json('Error: ' + err));
         }
 
